@@ -26,11 +26,23 @@ export default function App() {
     dispatch(setFilter(filter));
   };
 
+  const getFilteredContacts = () => {
+    if (filter === "all") {
+      return contacts;
+    }
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
   return (
     <div className={css.app}>
       <ContactForm onAddContact={handleAddContact} />
-      <SearchBox filter={filter} onFilterChange={handleFilterChange} />
-      <ContactList contacts={contacts} onDelete={handleRemoveContact} />
+      <SearchBox value={filter} onSearch={handleFilterChange} />
+      <ContactList
+        contacts={getFilteredContacts()}
+        onDelete={handleRemoveContact}
+      />
     </div>
   );
 }
