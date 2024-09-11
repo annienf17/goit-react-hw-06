@@ -1,8 +1,11 @@
+// src/components/ContactForm.jsx
 /* eslint-disable react/prop-types */
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
 import css from "./ContactForm.module.css";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../features/contacts/contactsSlice";
 
 const ContactFormSchema = Yup.object().shape({
   name: Yup.string()
@@ -17,14 +20,18 @@ const ContactFormSchema = Yup.object().shape({
     .max(50, "Maksymalna liczba znaków to 50"),
 });
 
-export default function ContactForm({ onAddContact }) {
+export default function ContactForm() {
+  const dispatch = useDispatch();
+
   const handleAdd = (values, { resetForm }) => {
     try {
-      onAddContact({
-        id: nanoid(),
-        name: values.name,
-        number: values.number,
-      });
+      dispatch(
+        addContact({
+          id: nanoid(),
+          name: values.name,
+          number: values.number,
+        })
+      );
       resetForm();
     } catch (error) {
       console.error("Error adding contact:", error);
