@@ -46,6 +46,10 @@ const contactsSlice = createSlice({
         (contact) => contact.id !== action.payload
       );
       localStorage.setItem("contacts", JSON.stringify(state.items)); // Zapisz do localStorage
+      if (state.items.length === 0) {
+        state.items = loadInitialContacts(); // Załaduj initialContacts, jeśli lista jest pusta
+        localStorage.setItem("contacts", JSON.stringify(state.items)); // Zapisz initialContacts do localStorage
+      }
     },
   },
 });

@@ -16,7 +16,7 @@ export default function SearchBox() {
         Find contacts by name
         <input
           type="text"
-          value={filter}
+          value={filter === "all" ? "" : filter}
           onChange={(e) => handleSearch(e.target.value)}
           className={css.input}
         />
