@@ -30,7 +30,7 @@ export default function App() {
     <div className={css.app}>
       <ContactForm onAddContact={handleAddContact} />
       <SearchBox filter={filter} onFilterChange={handleFilterChange} />
-      <ContactList contacts={contacts} onRemoveContact={handleRemoveContact} />
+      <ContactList contacts={contacts} onDelete={handleRemoveContact} />
     </div>
   );
 }
