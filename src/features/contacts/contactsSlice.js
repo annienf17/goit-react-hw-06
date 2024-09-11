@@ -37,11 +37,13 @@ const contactsSlice = createSlice({
   reducers: {
     addContact: (state, action) => {
       state.items.push(action.payload);
+      localStorage.setItem("contacts", JSON.stringify(state.items)); // Zapisz do localStorage
     },
     removeContact: (state, action) => {
       state.items = state.items.filter(
         (contact) => contact.id !== action.payload
       );
+      localStorage.setItem("contacts", JSON.stringify(state.items)); // Zapisz do localStorage
     },
   },
 });

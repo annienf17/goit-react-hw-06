@@ -17,14 +17,18 @@ const ContactFormSchema = Yup.object().shape({
     .max(50, "Maksymalna liczba znaków to 50"),
 });
 
-export default function ContactForm({ onAdd }) {
+export default function ContactForm({ onAddContact }) {
   const handleAdd = (values, { resetForm }) => {
-    onAdd({
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-    });
-    resetForm();
+    try {
+      onAddContact({
+        id: nanoid(),
+        name: values.name,
+        number: values.number,
+      });
+      resetForm();
+    } catch (error) {
+      console.error("Error adding contact:", error);
+    }
   };
 
   return (
