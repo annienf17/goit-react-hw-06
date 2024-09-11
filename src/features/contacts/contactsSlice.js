@@ -7,18 +7,20 @@ const loadInitialContacts = () => {
   const savedContacts = localStorage.getItem("contacts");
   console.log("Saved Contacts:", savedContacts);
   if (savedContacts) {
-    return JSON.parse(savedContacts);
-  } else {
-    const initialContacts = contactsData.map((contact, index) => {
-      const newId = nanoid();
-      const newContact = { ...contact, id: newId };
-      console.log(`Contact ${index + 1}:`, newContact);
-      return newContact;
-    });
-    console.log("Initial Contacts:", initialContacts);
-    saveContactsToLocalStorage(initialContacts); // Zapisz kontakty do localStorage
-    return initialContacts;
+    const parsedContacts = JSON.parse(savedContacts);
+    if (parsedContacts.length > 0) {
+      return parsedContacts;
+    }
   }
+  const initialContacts = contactsData.map((contact, index) => {
+    const newId = nanoid();
+    const newContact = { ...contact, id: newId };
+    console.log(`Contact ${index + 1}:`, newContact);
+    return newContact;
+  });
+  console.log("Initial Contacts:", initialContacts);
+  saveContactsToLocalStorage(initialContacts); // Zapisz kontakty do localStorage
+  return initialContacts;
 };
 
 // Save contacts to localStorage if they don't already exist, to avoid overwriting
