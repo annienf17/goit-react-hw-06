@@ -1,14 +1,10 @@
 /* eslint-disable react/prop-types */
 import { HiUser, HiPhone } from "react-icons/hi";
 import css from "./Contact.module.css";
-import { useDispatch } from "react-redux";
-import { removeContact } from "../../features/contacts/contactsSlice";
 
-export default function Contact({ data: { id, name, number } }) {
-  const dispatch = useDispatch();
-
+export default function Contact({ data: { id, name, number }, onDelete }) {
   const handleDelete = () => {
-    dispatch(removeContact(id));
+    onDelete(id);
   };
 
   return (

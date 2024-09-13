@@ -32,7 +32,7 @@ const contactsSlice = createSlice({
         (contact) => contact.id !== action.payload
       );
       if (state.items.length === 0) {
-        state.items = loadInitialContacts(); // Załaduj initialContacts, jeśli lista jest pusta
+        state.items = loadInitialContacts(); // Load initialContacts if the list is empty
       }
     },
   },
