@@ -1,18 +1,19 @@
+import { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
 import css from "./ContactForm.module.css";
-import { useDispatch } from "react-redux";
-import { addContact } from "../../features/contacts/contactsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addContact, clearErrors } from "../../features/contacts/contactsSlice";
 
 const ContactFormSchema = Yup.object().shape({
   name: Yup.string()
-    .matches(/^[A-Za-z]+$/, "Imię może zawierać tylko litery")
+    .matches(/^[A-Za-z\s]+$/, "Imię może zawierać tylko litery i spacje")
     .required("Wypełnienie pola jest obowiązkowe")
     .min(3, "Minimalna liczba znaków to 3")
     .max(50, "Maksymalna liczba znaków to 50"),
   number: Yup.string()
-    .matches(/^\d+(-\d+){0,2}$/, "Number moze zawierac tylko cyfry i myslniki")
+    .matches(/^\d+(-\d+){0,2}$/, "Numer może zawierać tylko cyfry i myślniki")
     .required("Wypełnienie pola jest obowiązkowe")
     .min(3, "Minimalna liczba znaków to 3")
     .max(50, "Maksymalna liczba znaków to 50"),
@@ -20,19 +21,32 @@ const ContactFormSchema = Yup.object().shape({
 
 export default function ContactForm() {
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.contacts.error);
 
-  const handleAdd = (values, { resetForm }) => {
-    try {
-      dispatch(
-        addContact({
-          id: nanoid(),
-          name: values.name,
-          number: values.number,
-        })
-      );
+  useEffect(() => {
+    return () => {
+      dispatch(clearErrors());
+    };
+  }, [dispatch]);
+
+  const handleAdd = (values, { resetForm, setFieldError }) => {
+    dispatch(
+      addContact({
+        id: nanoid(),
+        name: values.name,
+        number: values.number,
+      })
+    );
+
+    if (error) {
+      if (error.includes("name")) {
+        setFieldError("name", error);
+      }
+      if (error.includes("number")) {
+        setFieldError("number", error);
+      }
+    } else {
       resetForm();
-    } catch (error) {
-      console.error("Error adding contact:", error);
     }
   };
 
@@ -47,16 +61,24 @@ export default function ContactForm() {
           <Form>
             <div className={css.formGroup}>
               <label>
-                Name
+                Imię
                 <Field type="text" name="name" />
-                <ErrorMessage name="name" component="div" />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className={css.error}
+                />
               </label>
             </div>
             <div className={css.formGroup}>
               <label>
-                Number
+                Numer
                 <Field type="tel" name="number" />
-                <ErrorMessage name="number" component="div" />
+                <ErrorMessage
+                  name="number"
+                  component="div"
+                  className={css.error}
+                />
               </label>
             </div>
             <div className={css.buttonContainer}>
@@ -64,6 +86,7 @@ export default function ContactForm() {
                 Add contact
               </button>
             </div>
+            {error && <div className={css.error}>{error}</div>}
           </Form>
         </div>
       )}

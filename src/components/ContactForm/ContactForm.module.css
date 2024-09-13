@@ -32,3 +32,9 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* ContactForm.module.css */
+.error {
+  color: rgb(180, 228, 247);
+  margin-bottom: 10px;
+}
