@@ -23,10 +23,6 @@ export default function ContactForm() {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.contacts.error);
 
-  useEffect(() => {
-    dispatch(clearErrors());
-  }, [dispatch]);
-
   const handleAdd = (values, { resetForm, setFieldError }) => {
     dispatch(
       addContact({
@@ -47,6 +43,10 @@ export default function ContactForm() {
       resetForm();
     }
   };
+
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, [dispatch]);
 
   return (
     <Formik
