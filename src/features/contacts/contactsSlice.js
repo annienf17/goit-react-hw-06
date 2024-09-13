@@ -18,6 +18,15 @@ const loadInitialContacts = () => {
   return initialContacts;
 };
 
+// Helper function to check for duplicates
+const isDuplicate = (contacts, newContact) => {
+  return contacts.some(
+    (contact) =>
+      contact.name.toLowerCase() === newContact.name.toLowerCase() ||
+      contact.number === newContact.number
+  );
+};
+
 const contactsSlice = createSlice({
   name: "contacts",
   initialState: {
@@ -25,7 +34,11 @@ const contactsSlice = createSlice({
   },
   reducers: {
     addContact: (state, action) => {
-      state.items.push(action.payload);
+      if (!isDuplicate(state.items, action.payload)) {
+        state.items.push(action.payload);
+      } else {
+        console.warn("Contact with the same name or number already exists.");
+      }
     },
     removeContact: (state, action) => {
       state.items = state.items.filter(
