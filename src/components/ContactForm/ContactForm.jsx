@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
@@ -24,9 +24,7 @@ export default function ContactForm() {
   const error = useSelector((state) => state.contacts.error);
 
   useEffect(() => {
-    return () => {
-      dispatch(clearErrors());
-    };
+    dispatch(clearErrors());
   }, [dispatch]);
 
   const handleAdd = (values, { resetForm, setFieldError }) => {
@@ -85,8 +83,8 @@ export default function ContactForm() {
               <button type="submit" className={css.button}>
                 Add contact
               </button>
+              {error && <div className={css.error}>{error}</div>}
             </div>
-            {error && <div className={css.error}>{error}</div>}
           </Form>
         </div>
       )}
