@@ -4,17 +4,18 @@ import { createSelector } from "reselect";
 const selectContacts = (state) => state.contacts.items;
 
 // Selector to get filter from state
-const selectFilter = (state) => state.filters.status;
+const selectFilter = (state) => state.filters.filter;
 
 // Selector to filter contacts based on filter
 export const selectFilteredContacts = createSelector(
   [selectContacts, selectFilter],
   (contacts, filter) => {
-    if (filter === "all") {
+    if (!filter) {
       return contacts;
     }
+    const normalizedFilter = filter.toLowerCase();
     return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+      contact.name.toLowerCase().includes(normalizedFilter)
     );
   }
 );
