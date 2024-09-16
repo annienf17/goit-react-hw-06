@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import contactsData from "../../contacts.json";
 import { nanoid } from "nanoid";
 
-// Ładowanie początkowych kontaktów z localStorage lub użycie domyślnych kontaktów
 const loadInitialContacts = () => {
   const savedContacts = localStorage.getItem("contacts");
   if (savedContacts) {
@@ -11,16 +10,13 @@ const loadInitialContacts = () => {
       return parsedContacts;
     }
   }
-  const initialContacts = contactsData.map((contact) => ({
+  return contactsData.map((contact) => ({
     ...contact,
     id: nanoid(),
   }));
-  return initialContacts;
 };
 
-// Funkcja pomocnicza do sprawdzania duplikatów
 const isDuplicate = (contacts, newContact) => {
-  console.log("Checking for duplicates:", newContact);
   const duplicateName = contacts.some(
     (contact) => contact.name.toLowerCase() === newContact.name.toLowerCase()
   );
@@ -60,7 +56,7 @@ const contactsSlice = createSlice({
         (contact) => contact.id !== action.payload
       );
       if (state.items.length === 0) {
-        state.items = loadInitialContacts(); // Załaduj initialContacts, jeśli lista jest pusta
+        state.items = loadInitialContacts();
       }
     },
     clearErrors: (state) => {
