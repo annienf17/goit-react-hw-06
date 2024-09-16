@@ -20,6 +20,7 @@ const loadInitialContacts = () => {
 
 // Funkcja pomocnicza do sprawdzania duplikatów
 const isDuplicate = (contacts, newContact) => {
+  console.log("Checking for duplicates:", newContact);
   const duplicateName = contacts.some(
     (contact) => contact.name.toLowerCase() === newContact.name.toLowerCase()
   );
